@@ -31,6 +31,19 @@
     </div>
 </div>
 
+<hr />
+<h4>Rooms available</h4>
+<ul>
+    @foreach(var r in roomlist)
+    {
+        <li>
+            <span>@r.RoomName</span>
+            <button @onclick="() => JoinRoom(r.RoomId)">Join</button>
+        </li>
+    }
+</ul>
+
+
 
 @code {
     private HubConnection? hubConnection;
@@ -58,6 +71,22 @@
         if (hubConnection is not null)
         {
             myRoom = await hubConnection.InvokeAsync<GameRoom>("CreateRoom", playerName, currentRoomName);
+        }
+    }
+
+    private async Task JoinRoom(string roomId)
+    {
+        if (hubConnection is not null)
+        {
+            var theRoom = await hubConnection.InvokeAsync<GameRoom>("JoinRoom", roomId, playerName);
+            if (theRoom is not null)
+            {
+                myRoom = theRoom;
+            }
+            else
+            {
+                Console.WriteLine("Room is not available ");
+            }
         }
     }
 }
