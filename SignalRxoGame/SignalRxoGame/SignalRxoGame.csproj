@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\SignalRxoGame.Client\SignalRxoGame.Client.csproj" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.Server" Version="9.0.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\SignalRxoGame.shared\SignalRxoGame.shared.csproj" />
   </ItemGroup>
 
 </Project>

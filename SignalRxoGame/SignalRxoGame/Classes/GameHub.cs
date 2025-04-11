@@ -1,13 +1,19 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using SignalRxoGame.shared;
 
 namespace SignalRxoGame.Classes
 {
     public class GameHub : Hub
     {
-        public override Task OnConnectedAsync()
+        private static readonly List<GameRoom> gameRooms = new List<GameRoom>();
+
+        public override async Task OnConnectedAsync()
         {
             Console.WriteLine($"Connector Id '{Context.ConnectionId}' connected");
-            return base.OnConnectedAsync();
+
+            await Clients.Caller.SendAsync("Rooms", gameRooms.OrderBy(r => r.RoomName));
+
+            //return base.OnConnectedAsync();
         }
     }
 }

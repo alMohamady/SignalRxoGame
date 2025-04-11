@@ -1,3 +1,4 @@
+using SignalRxoGame.Classes;
 using SignalRxoGame.Client.Pages;
 using SignalRxoGame.Components;
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveWebAssemblyComponents();
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -30,5 +33,7 @@ app.MapStaticAssets();
 app.MapRazorComponents<App>()
     .AddInteractiveWebAssemblyRenderMode()
     .AddAdditionalAssemblies(typeof(SignalRxoGame.Client._Imports).Assembly);
+
+app.MapHub<GameHub>("/mygamehyb");
 
 app.Run();

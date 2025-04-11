@@ -1,7 +1,21 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client
+@inject NavigationManager nm
+@rendermode @(new InteractiveWebAssemblyRenderMode(false))
 
 <h3>Game</h3>
 
 @code {
+    private HubConnection? hubConnection;
+
+    protected override async Task OnInitializedAsync()
+    {
+        hubConnection = new HubConnectionBuilder()
+         .WithUrl(nm.ToAbsoluteUri("/mygamehyb"))
+         .Build();
+
+        await hubConnection.StartAsync();
+
+    }
 
 }
