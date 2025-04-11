@@ -15,5 +15,22 @@ namespace SignalRxoGame.Classes
 
             //return base.OnConnectedAsync();
         }
+
+        public async Task<GameRoom> CreateRoom(string palyerName, string roomName)
+        {
+            var _room = gameRooms.Where(r => r.RoomName == roomName).FirstOrDefault();
+            if (_room == null)
+            {
+                var room = new GameRoom()
+                {
+                    RoomId = Guid.NewGuid().ToString(),
+                    RoomName = roomName,
+                };
+                gameRooms.Add(room);
+                _room = room;
+            }
+            await Clients.All.SendAsync("Rooms", gameRooms.OrderBy(r => r.RoomName));
+            return _room;
+        }
     }
 }

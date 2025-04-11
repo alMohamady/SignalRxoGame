@@ -6,8 +6,38 @@
 
 <h3>Game</h3>
 
+
+<div class="row">
+    <div class="col-2">
+        Player Name:
+    </div>
+    <div class="col-6">
+        <input @bind="playerName" placeholder="Enter the Name" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-2">
+        Room Name:
+    </div>
+    <div class="col-6">
+        <input @bind="currentRoomName" placeholder="Enter the room Name" />
+    </div>
+</div>
+<div class="row">
+    <div class="col-3">
+    </div>
+    <div class="col-6">
+        <button @onclick="CreateRoom">Create room</button>
+    </div>
+</div>
+
+
 @code {
     private HubConnection? hubConnection;
+    private string playerName = string.Empty;
+    private string currentRoomName = string.Empty;
+    private GameRoom? myRoom;
+    private List<GameRoom> roomlist = new(); 
 
     protected override async Task OnInitializedAsync()
     {
@@ -23,4 +53,11 @@
         await hubConnection.StartAsync();
     }
 
+    private async Task CreateRoom()
+    {
+        if (hubConnection is not null)
+        {
+            myRoom = await hubConnection.InvokeAsync<GameRoom>("CreateRoom", playerName, currentRoomName);
+        }
+    }
 }
