@@ -1,5 +1,6 @@
 ﻿@page "/"
 @using Microsoft.AspNetCore.SignalR.Client
+@using SignalRxoGame.shared
 @inject NavigationManager nm
 @rendermode @(new InteractiveWebAssemblyRenderMode(false))
 
@@ -14,8 +15,12 @@
          .WithUrl(nm.ToAbsoluteUri("/mygamehyb"))
          .Build();
 
-        await hubConnection.StartAsync();
+        hubConnection.On<List<GameRoom>>("Rooms", (roomList) =>
+        {
+            Console.WriteLine($" The Total of all rooms count = {roomList.Count}");    
+        }); 
 
+        await hubConnection.StartAsync();
     }
 
 }

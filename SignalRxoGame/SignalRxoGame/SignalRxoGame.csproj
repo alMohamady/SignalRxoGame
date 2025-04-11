@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\SignalRxoGame.shared\SignalRxoGame.shared.csproj" />
+    <ProjectReference Include="..\SignalRxoGame.Client\SignalRxoGame.Client.csproj" />
   </ItemGroup>
 
 </Project>
