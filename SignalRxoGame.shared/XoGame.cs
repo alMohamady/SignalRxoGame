@@ -9,7 +9,7 @@ namespace SignalRxoGame.shared
     public class XoGame
     {
         public string xPlayerConId { get; set; }
-        public string oPlayerConId { get; set;
+        public string oPlayerConId { get; set; }
 
     }
 }

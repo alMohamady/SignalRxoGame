@@ -63,9 +63,11 @@ else
          .WithUrl(nm.ToAbsoluteUri("/mygamehyb"))
          .Build();
 
-        hubConnection.On<List<GameRoom>>("Rooms", (roomList) =>
+        hubConnection.On<List<GameRoom>>("Rooms", (_roomList) =>
         {
-            Console.WriteLine($" The Total of all rooms count = {roomList.Count}");    
+            Console.WriteLine($" The Total of all rooms count = {_roomList.Count}");
+            roomlist = _roomList;
+            StateHasChanged();
         }); 
 
         await hubConnection.StartAsync();

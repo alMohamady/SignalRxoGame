@@ -1,6 +1,15 @@
 ﻿@using Microsoft.AspNetCore.SignalR.Client
 @using SignalRxoGame.shared
-<h3>Room</h3>
+
+@if(myRoom != null)
+{
+    <h3>Room : @myRoom.RoomName</h3>
+    if (myRoom.players.Count < 2)
+    {
+        <h3> you can't play this game with ypur self please wait for another player </h3>
+    }
+}
+
 
 @code {
     [Parameter]
@@ -10,6 +19,17 @@
     public HubConnection? hubCon {get; set;}
 
 
-
+    protected override async Task OnInitializedAsync()
+    {
+        if (myRoom == null || hubCon == null || hubCon.ConnectionId == null)
+        {
+            return;
+        }
+        hubCon.On<Player>("NewPlayerJoined", Player =>
+        {
+            myRoom.players.Add(Player);
+            StateHasChanged();
+        });
+    }
 
 }
