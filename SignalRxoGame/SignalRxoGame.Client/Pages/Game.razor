@@ -4,46 +4,51 @@
 @inject NavigationManager nm
 @rendermode @(new InteractiveWebAssemblyRenderMode(false))
 
-<h3>Game</h3>
+<h3>Welcome to X-O Game</h3>
+@if (myRoom is null)
+{
+    <div class="row">
+        <div class="col-2">
+            Player Name:
+        </div>
+        <div class="col-6">
+            <input @bind="playerName" placeholder="Enter the Name" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            Room Name:
+        </div>
+        <div class="col-6">
+            <input @bind="currentRoomName" placeholder="Enter the room Name" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-3">
+        </div>
+        <div class="col-6">
+            <button @onclick="CreateRoom">Create room</button>
+        </div>
+    </div>
 
-
-<div class="row">
-    <div class="col-2">
-        Player Name:
-    </div>
-    <div class="col-6">
-        <input @bind="playerName" placeholder="Enter the Name" />
-    </div>
-</div>
-<div class="row">
-    <div class="col-2">
-        Room Name:
-    </div>
-    <div class="col-6">
-        <input @bind="currentRoomName" placeholder="Enter the room Name" />
-    </div>
-</div>
-<div class="row">
-    <div class="col-3">
-    </div>
-    <div class="col-6">
-        <button @onclick="CreateRoom">Create room</button>
-    </div>
-</div>
-
-<hr />
-<h4>Rooms available</h4>
-<ul>
-    @foreach(var r in roomlist)
-    {
-        <li>
-            <span>@r.RoomName</span>
-            <button @onclick="() => JoinRoom(r.RoomId)">Join</button>
-        </li>
-    }
-</ul>
-
-
+    <hr />
+    <h4>Rooms available</h4>
+    <ul>
+        @foreach(var r in roomlist)
+        {
+            <li>
+                <span>@r.RoomName</span>
+                <button @onclick="() => JoinRoom(r.RoomId)">Join</button>
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <CascadingValue Value="hubConnection">
+        <Room myRoom="myRoom" />
+    </CascadingValue>
+}
 
 @code {
     private HubConnection? hubConnection;

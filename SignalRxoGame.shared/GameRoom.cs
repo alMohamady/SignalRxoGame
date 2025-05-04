@@ -27,6 +27,7 @@ namespace SignalRxoGame.shared
                 {
                    myGame.oPlayerConId = player.connectionId;   
                 }
+                return true;
             }
             return false;
         }

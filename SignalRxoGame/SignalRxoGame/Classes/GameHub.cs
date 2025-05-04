@@ -36,9 +36,31 @@ namespace SignalRxoGame.Classes
                 {
                     gameRooms.Add(room);
                     _room = room;
-                }            }
+                }            
+            }
+            await Groups.AddToGroupAsync(Context.ConnectionId, _room.RoomId);
             await Clients.All.SendAsync("Rooms", gameRooms.OrderBy(r => r.RoomName));
             return _room;
+        }
+
+        public async Task<GameRoom?> JoinRoom(string roomId, string playerName)
+        {
+            var room = gameRooms.FirstOrDefault(r =>  r.RoomId == roomId);
+            if (room is not null)
+            {
+                var newPalyer = new Player()
+                {
+                    connectionId = Context.ConnectionId,
+                    name = playerName
+                };
+                if (room.AddPlayer(newPalyer))
+                {
+                    await Groups.AddToGroupAsync(Context.ConnectionId, room.RoomId);
+                    await Clients.Group(room.RoomId).SendAsync("NewPlayerJoined", newPalyer);
+                    return room;
+                }
+            }
+            return null;
         }
     }
 }

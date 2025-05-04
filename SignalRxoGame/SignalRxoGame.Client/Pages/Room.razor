@@ -1,0 +1,15 @@
+﻿@using Microsoft.AspNetCore.SignalR.Client
+@using SignalRxoGame.shared
+<h3>Room</h3>
+
+@code {
+    [Parameter]
+    public GameRoom? myRoom { get; set; }
+
+    [CascadingParameter]
+    public HubConnection? hubCon {get; set;}
+
+
+
+
+}
