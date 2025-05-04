@@ -36,7 +36,7 @@ namespace SignalRxoGame.Classes
                 {
                     gameRooms.Add(room);
                     _room = room;
-                }            
+                }
             }
             await Groups.AddToGroupAsync(Context.ConnectionId, _room.RoomId);
             await Clients.All.SendAsync("Rooms", gameRooms.OrderBy(r => r.RoomName));
@@ -45,7 +45,7 @@ namespace SignalRxoGame.Classes
 
         public async Task<GameRoom?> JoinRoom(string roomId, string playerName)
         {
-            var room = gameRooms.FirstOrDefault(r =>  r.RoomId == roomId);
+            var room = gameRooms.FirstOrDefault(r => r.RoomId == roomId);
             if (room is not null)
             {
                 var newPalyer = new Player()
@@ -61,6 +61,16 @@ namespace SignalRxoGame.Classes
                 }
             }
             return null;
+        }
+
+        public async Task StartGame(string roomId)
+        {
+            var room = gameRooms.FirstOrDefault(r => r.RoomId == roomId);
+            if (room is not null)
+            {
+                room.myGame.StartNewGame();
+                await Clients.Group(roomId).SendAsync("GameUpdate", room);
+            }
         }
     }
 }
