@@ -13,6 +13,21 @@
 @if(!myRoom.myGame.GameStart && myRoom.myGame.xPlayerConId != myPlayerId && myRoom.players.Count == 2)
 {
     <h3>you must wait for your next player to start :)</h3>
+}
+@if ((!myRoom.myGame.GameStart || myRoom.myGame.GameOver)
+     && myRoom.myGame.xPlayerConId == myPlayerId && myRoom.players.Count == 2)
+{
+    <button @onclick="StartGame">Start Game</button>
+}
+
+@if (myRoom.myGame.GameStart)
+{
+    <h3>the game @myRoom.RoomName on the run</h3>
+    <h2> @myRoom.myGame.currentSympol is on the game </h2>
+    <h4> X Player is @myRoom.players[0].name </h4>
+    <h4> O Player is @myRoom.players[1].name </h4>
+
+
 
 }
 
