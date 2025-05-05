@@ -14,8 +14,22 @@
 {
     <h3>you must wait for your next player to start :)</h3>
 }
+
+@if (myRoom.myGame.GameOver && !myRoom.myGame.GameDraw)
+{
+    <h1>Gmae over</h1>
+    <h2>Winner is @myRoom.myGame.winnerId</h2>
+}
+
+@if (!myRoom.myGame.GameOver && myRoom.myGame.GameDraw)
+{
+    <h1>Gmae over</h1>
+    <h2>No winner game draw</h2>
+}
+
+
 @if ((!myRoom.myGame.GameStart || myRoom.myGame.GameOver)
-     && myRoom.myGame.xPlayerConId == myPlayerId && myRoom.players.Count == 2)
+&& myRoom.myGame.xPlayerConId == myPlayerId && myRoom.players.Count == 2)
 {
     <button @onclick="StartGame">Start Game</button>
 }
@@ -27,7 +41,26 @@
     <h4> X Player is @myRoom.players[0].name </h4>
     <h4> O Player is @myRoom.players[1].name </h4>
 
+    <table class="xogame">
+        @for(int r =0; r< 3; r++)
+        {
+            <tr>
+                @for(int c =0; c < 3; c++)
+                {
+                    var _r = r;
+                    var _c = c;
+                    <td @onclick="() => PlayMove(_r, _c)">
+                        @myRoom.myGame.GameBoard[_r][_c]
+                    </td>
+                }
+            </tr>
+        }
+    </table>
 
+    @if (!myTurn() && !myRoom.myGame.GameOver)
+    {
+        <h1>please wait ............</h1>
+    }
 
 }
 
@@ -70,5 +103,19 @@
             return;
         }
         await hubCon.InvokeAsync("StartGame", myRoom.RoomId);
+    }
+
+    public async Task PlayMove(int row, int col)
+    {
+
+    }
+
+    private bool myTurn()
+    {
+        if (myRoom is not null)
+        {
+            return myPlayerId == myRoom.myGame.CurrentPlayerId;
+        }
+        return false;
     }
 }
