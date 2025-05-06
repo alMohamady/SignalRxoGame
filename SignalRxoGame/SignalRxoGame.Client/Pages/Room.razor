@@ -107,7 +107,12 @@
 
     public async Task PlayMove(int row, int col)
     {
-
+        if(myTurn() && myRoom != null && myRoom.myGame.GameStart && !myRoom.myGame.GameOver
+           && hubCon != null
+        )
+        {
+            await hubCon.InvokeAsync("PlayMove", myRoom.RoomId, row, col, myPlayerId);
+        }
     }
 
     private bool myTurn()

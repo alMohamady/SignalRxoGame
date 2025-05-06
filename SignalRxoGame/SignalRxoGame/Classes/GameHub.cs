@@ -72,5 +72,20 @@ namespace SignalRxoGame.Classes
                 await Clients.Group(roomId).SendAsync("GameUpdate", room);
             }
         }
+
+        public async Task PlayMove(string roomId, int row, int col, string playerId)
+        {
+            var room = gameRooms.FirstOrDefault(r => r.RoomId == roomId);
+            if (room is not null && room.myGame.PlayMove(row, col, playerId))
+            {
+                room.myGame.winnerId = room.myGame.CheckWinner();
+                room.myGame.CheckIfDrow();
+                if (!string.IsNullOrEmpty(room.myGame.winnerId) || room.myGame.GameDraw)
+                {
+                    room.myGame.GameOver = true;
+                }
+                await Clients.Group(roomId).SendAsync("GameUpdate", room);
+            }
+        }
     }
 }
