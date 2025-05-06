@@ -68,7 +68,7 @@ namespace SignalRxoGame.shared
 
         public string CheckWinner()
         {
-            string[] players = { "x", "o" };
+            string[] players = { "X", "O" };
 
             foreach (var player in players)
             {

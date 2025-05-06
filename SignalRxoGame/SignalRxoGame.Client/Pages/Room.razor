@@ -21,7 +21,7 @@
     <h2>Winner is @myRoom.myGame.winnerId</h2>
 }
 
-@if (!myRoom.myGame.GameOver && myRoom.myGame.GameDraw)
+@if (myRoom.myGame.GameOver && myRoom.myGame.GameDraw)
 {
     <h1>Gmae over</h1>
     <h2>No winner game draw</h2>
